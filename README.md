@@ -39,7 +39,7 @@ along with a preview of each icon.
 Installation is via [Composer][composer]:
 
 ```
-$ composer require praxisnetau/silverware-font-icons
+$ composer require silverware/font-icons
 ```
 
 ## Configuration
