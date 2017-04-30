@@ -28,6 +28,10 @@
       "SilverWare\\FontIcons\\": "src/"
     }
   },
+  "extra": {
+    "installer-name": "silverware-font-icons"
+  },
+  "target-dir": "silverware-font-icons",
   "minimum-stability": "dev",
   "prefer-stable": true
 }
