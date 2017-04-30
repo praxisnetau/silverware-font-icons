@@ -1,0 +1,11 @@
+---
+Name: silverware-font-icons
+---
+
+# Configure Admin Extensions:
+
+SilverStripe\Admin\LeftAndMain:
+  extra_requirements_css:
+    - silverware-font-icons/admin/client/dist/styles/bundle.css
+  extra_requirements_javascript:
+    - silverware-font-icons/admin/client/dist/js/bundle.js

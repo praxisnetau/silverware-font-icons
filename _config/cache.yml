@@ -1,0 +1,11 @@
+---
+Name: silverware-font-icons-cache
+---
+
+# Configure Cache:
+
+SilverStripe\Core\Injector\Injector:
+  Psr\SimpleCache\CacheInterface.FontIconCache:
+    factory: SilverStripe\Core\Cache\CacheFactory
+    constructor:
+      namespace: 'FontIconCache'

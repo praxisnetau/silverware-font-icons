@@ -1,0 +1,17 @@
+---
+Name: silverware-font-icons-model
+---
+
+# Configure Model:
+
+SilverStripe\Core\Injector\Injector:
+  FontIcon:
+    class: SilverWare\FontIcons\ORM\FieldType\DBFontIcon
+  FontIconBackend:
+    class: SilverWare\FontIcons\Backends\FontAwesomeBackend
+    properties:
+      version: 4.7.0
+      classes:
+        icon: fa-%s
+        list-item: fa-li
+        fixed-width: fa-fw
