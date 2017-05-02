@@ -29,6 +29,9 @@
     }
   },
   "extra": {
+    "branch-alias": {
+      "dev-master": "0.1.x-dev"
+    },
     "installer-name": "silverware-font-icons"
   },
   "minimum-stability": "dev",
