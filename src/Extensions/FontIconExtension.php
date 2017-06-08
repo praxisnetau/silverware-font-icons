@@ -23,6 +23,7 @@ use SilverStripe\Forms\Tab;
 use SilverStripe\ORM\ArrayLib;
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\ORM\FieldType\DBField;
+use SilverWare\Colorpicker\Forms\ColorField;
 use SilverWare\FontIcons\Forms\FontIconField;
 
 /**
@@ -43,7 +44,8 @@ class FontIconExtension extends DataExtension
      * @config
      */
     private static $db = [
-        'FontIcon' => 'FontIcon'
+        'FontIcon' => 'FontIcon',
+        'FontIconColor' => 'Color'
     ];
     
     /**
@@ -103,6 +105,10 @@ class FontIconExtension extends DataExtension
                 FontIconField::create(
                     'FontIcon',
                     $this->owner->fieldLabel('FontIcon')
+                ),
+                ColorField::create(
+                    'FontIconColor',
+                    $this->owner->fieldLabel('FontIconColor')
                 )
             ]
         );
@@ -117,6 +123,8 @@ class FontIconExtension extends DataExtension
      */
     public function updateFieldLabels(&$labels)
     {
+        $labels['FontIconColor'] = _t(__CLASS__ . '.ICONCOLOR', 'Icon color');
+        
         $labels['Icon'] = $labels['FontIcon'] = $labels['FontIconTagCMS'] = _t(__CLASS__ . '.ICON', 'Icon');
     }
     
@@ -189,11 +197,18 @@ class FontIconExtension extends DataExtension
     /**
      * Renders the font icon tag for the HTML template.
      *
-     * @return string
+     * @return DBHTMLText|string
      */
     public function getFontIconTag()
     {
-        return $this->hasFontIcon() ? $this->backend->getTag($this->owner->FontIconClass) : null;
+        if ($this->owner->hasFontIcon()) {
+            
+            return $this->backend->getTag(
+                $this->owner->FontIconClass,
+                $this->owner->FontIconColor
+            );
+            
+        }
     }
     
     /**

@@ -20,6 +20,7 @@ namespace SilverWare\FontIcons\Backends;
 use Psr\SimpleCache\CacheInterface;
 use SilverStripe\Core\Flushable;
 use SilverStripe\Core\Injector\Injector;
+use SilverStripe\View\ArrayData;
 use SilverWare\FontIcons\Interfaces\FontIconBackend;
 use Symfony\Component\Yaml\Yaml;
 
@@ -168,15 +169,19 @@ class FontAwesomeBackend implements FontIconBackend, Flushable
     }
     
     /**
-     * Answers a font icon tag with the given class names.
+     * Answers a font icon tag with the given class names and optional color.
      *
      * @param string $classNames
+     * @param string $color
      *
-     * @return string
+     * @return DBHTMLText
      */
-    public function getTag($classNames)
+    public function getTag($classNames, $color = null)
     {
-        return sprintf('<i class="fa %s"></i> ', $classNames);
+        return ArrayData::create([
+            'ClassNames' => $classNames,
+            'Color' => $color
+        ])->renderWith(sprintf('%s\Tag', self::class));
     }
     
     /**
