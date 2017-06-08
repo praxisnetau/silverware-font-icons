@@ -17,13 +17,13 @@
 
 namespace SilverWare\FontIcons\Extensions;
 
+use SilverStripe\Core\Convert;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\Tab;
 use SilverStripe\ORM\ArrayLib;
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\ORM\FieldType\DBField;
 use SilverWare\FontIcons\Forms\FontIconField;
-use SilverWare\Tools\ViewTools;
 
 /**
  * A data extension class which allows extended objects to use font icons.
@@ -127,7 +127,7 @@ class FontIconExtension extends DataExtension
      */
     public function getFontIconClass()
     {
-        return ViewTools::singleton()->array2att($this->owner->getFontIconClassNames());
+        return Convert::raw2att(implode(' ', array_filter($this->owner->getFontIconClassNames())));
     }
     
     /**
