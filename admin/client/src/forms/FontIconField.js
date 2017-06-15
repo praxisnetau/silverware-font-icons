@@ -1,7 +1,7 @@
 /* Font Icon Field
 ===================================================================================================================== */
 
-import $ from 'jQuery';
+import $ from 'jquery';
 
 $.entwine('silverware.fonticonfield', function($) {
   

@@ -2,7 +2,7 @@
 Name: silverware-font-icons
 ---
 
-# Configure Admin Extensions:
+# Configure Admin Requirements:
 
 SilverStripe\Admin\LeftAndMain:
   extra_requirements_css:

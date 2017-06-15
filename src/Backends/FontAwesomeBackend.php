@@ -254,7 +254,7 @@ class FontAwesomeBackend implements FontIconBackend, Flushable
         // Sort Icon Groups by Name:
         
         foreach ($icons as &$group) {
-            uasort($group, function($a, $b) {
+            uasort($group, function ($a, $b) {
                 return strcasecmp($a['name'], $b['name']);
             });
         }
