@@ -1,5 +1,9 @@
 # SilverWare Font Icons Module
 
+[![Latest Stable Version](https://poser.pugx.org/silverware/font-icons/v/stable)](https://packagist.org/packages/silverware/font-icons)
+[![Latest Unstable Version](https://poser.pugx.org/silverware/font-icons/v/unstable)](https://packagist.org/packages/silverware/font-icons)
+[![License](https://poser.pugx.org/silverware/font-icons/license)](https://packagist.org/packages/silverware/font-icons)
+
 Provides a new form field and database field type for referencing a font icon. Intended to be used with
 [SilverWare][silverware], however this module can also be installed into a regular
 [SilverStripe v4][silverstripe-framework] project. A backend for [Font Awesome][font-awesome] is provided
