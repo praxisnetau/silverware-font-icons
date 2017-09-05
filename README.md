@@ -30,13 +30,14 @@ However, font icon libraries such as [Font Awesome][font-awesome] provide a stag
 and we can't really expect users to remember the icon names, codes, or have to refer to a cheatsheet.
 
 We could just provide a standard select field listing all of the icons on offer, but users need to know
-what the icons look like. Enter `FontIconField` provided by this module. An extension of the SilverStripe
-`GroupedDropdownField` class, it provides a searchable list of icons provided by the configured backend,
-along with a preview of each icon.
+what the icons look like. Enter `FontIconField` provided by this module. An extension of the SilverWare
+`Select2AjaxField` class, it provides an Ajax-powered searchable list of icons provided by the configured
+backend, along with a preview of each icon.
 
 ## Requirements
 
 - [SilverStripe Framework v4][silverstripe-framework]
+- [SilverWare Select2 Module][silverware-select2]
 
 ## Installation
 
@@ -155,6 +156,7 @@ Please see [contributing](CONTRIBUTING.md) for more information.
 [BSD-3-Clause](LICENSE.md) &copy; Praxis Interactive
 
 [silverware]: https://github.com/praxisnetau/silverware
+[silverware-select2]: https://github.com/praxisnetau/silverware-select2
 [composer]: https://getcomposer.org
 [silverstripe-framework]: https://github.com/silverstripe/silverstripe-framework
 [font-awesome]: http://fontawesome.io
