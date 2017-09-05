@@ -17,12 +17,12 @@
 
 namespace SilverWare\FontIcons\Forms;
 
-use SilverStripe\Forms\GroupedDropdownField;
-use SilverStripe\ORM\ArrayList;
+use SilverStripe\Control\HTTPRequest;
 use SilverStripe\View\ArrayData;
+use SilverWare\Select2\Forms\Select2AjaxField;
 
 /**
- * An extension of the grouped dropdown field class for a font icon field.
+ * An extension of the Select2 Ajax field class for a font icon field.
  *
  * @package SilverWare\FontIcons\Forms
  * @author Colin Tucker <colin@praxis.net.au>
@@ -30,8 +30,18 @@ use SilverStripe\View\ArrayData;
  * @license https://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
  * @link https://github.com/praxisnetau/silverware-font-icons
  */
-class FontIconField extends GroupedDropdownField
+class FontIconField extends Select2AjaxField
 {
+    /**
+     * Defines the allowed actions for this field.
+     *
+     * @var array
+     * @config
+     */
+    private static $allowed_actions = [
+        'search'
+    ];
+    
     /**
      * Defines the injector dependencies for this object.
      *
@@ -41,73 +51,6 @@ class FontIconField extends GroupedDropdownField
     private static $dependencies = [
         'backend' => '%$FontIconBackend'
     ];
-    
-    /**
-     * Constructs the object upon instantiation.
-     *
-     * @param string $name Name of field.
-     * @param string $title Title of field.
-     * @param array|ArrayAccess $source A map of options used as the data source.
-     * @param mixed $value Value of field.
-     */
-    public function __construct($name, $title = null, $source = [], $value = null)
-    {
-        // Define Placeholder:
-        
-        $this->setEmptyString(' ')->setAttribute('data-placeholder', _t(__CLASS__ . '.DROPDOWNSELECT', 'Select'));
-        
-        // Construct Parent:
-        
-        parent::__construct($name, $title, $source, $value);
-    }
-    
-    /**
-     * Answers an array of HTML attributes for the field.
-     *
-     * @return array
-     */
-    public function getAttributes()
-    {
-        $attributes = array_merge(
-            parent::getAttributes(),
-            [
-                'data-tag' => $this->backend->getFieldTagName(),
-                'data-classes' => $this->backend->getFieldClasses(),
-            ]
-        );
-        
-        return $attributes;
-    }
-    
-    /**
-     * Answers the source options for the receiver.
-     *
-     * @return array|ArrayAccess
-     */
-    public function getSource()
-    {
-        if (!empty($this->source)) {
-            return $this->source;
-        }
-        
-        return $this->backend->getGroupedIcons();
-    }
-    
-    /**
-     * Answers an array of valid source values for the receiver.
-     *
-     * @return array
-     */
-    public function getSourceValues()
-    {
-        $values = [];
-        
-        foreach ($this->getSource() as $category => $icons) {
-            $values = array_merge($values, array_keys($icons));
-        }
-        
-        return $values;
-    }
     
     /**
      * Answers the field type for the template.
@@ -120,50 +63,145 @@ class FontIconField extends GroupedDropdownField
     }
     
     /**
-     * Answers an array data object representing an individual option.
+     * Answers an HTTP response containing JSON results matching the given search parameters.
      *
-     * @param mixed $title Title of group.
-     * @param array $icons Icons within this group.
+     * @param HTTPRequest $request
      *
-     * @return ArrayData
+     * @return HTTPResponse
      */
-    protected function getFieldOption($title, $icons)
+    public function search(HTTPRequest $request)
     {
-        if (!is_array($icons)) {
-            return parent::getFieldOption($title, $icons);
+        // Detect Ajax:
+        
+        if (!$request->isAjax()) {
+            return;
         }
         
-        $options = ArrayList::create();
+        // Initialise:
         
-        foreach ($icons as $id => $data) {
-            $options->push($this->getFontIconOption($id, $data));
+        $data = [];
+        
+        // Filter Icons:
+        
+        if ($term = $request->getVar('term')) {
+            
+            // Create Groups Array:
+            
+            $groups = [];
+            
+            // Iterate Icon Groups:
+            
+            foreach ($this->backend->getGroupedIcons() as $group => $icons) {
+                
+                // Create Children Array:
+                
+                $children = [];
+                
+                // Iterate Icons in Group:
+                
+                foreach ($icons as $id => $icon) {
+                    
+                    if (stripos($id, $term) !== false) {
+                        $children[] = $this->getResultData($this->getIconData($id));
+                    }
+                    
+                }
+                
+                // Create Result Group (if children defined):
+                
+                if (!empty($children)) {
+                    
+                    $groups[] = [
+                        'text' => $group,
+                        'children' => $children
+                    ];
+                    
+                }
+                
+            }
+            
+            // Define Results:
+            
+            $data['results'] = $groups;
+            
         }
         
-        return ArrayData::create([
-            'Title' => $title,
-            'Options' => $options
-        ]);
+        // Answer JSON Response:
+        
+        return $this->respond($data);
     }
     
     /**
-     * Answers an array data object representing an individual font icon option.
-     *
-     * @param string $value
-     * @param array $data
+     * Answers the record identified by the recorded field value.
      *
      * @return ArrayData
      */
-    protected function getFontIconOption($value, $data)
+    public function getValueRecord()
     {
-        $selected = $this->isSelectedValue($value, $this->Value());
-        $disabled = $this->isDisabledValue($value);
-        
-        return ArrayData::create([
-            'Value' => $value,
-            'Title' => $data['name'],
-            'Unicode' => $data['unicode'],
-            'Selected' => $selected,
-            'Disabled' => $disabled
-        ]);
+        if ($id = $this->Value()) {
+            return $this->getIconData($id);
+        }
+    }
+    
+    /**
+     * Answers the result format defined for the receiver.
+     *
+     * @return string
+     */
+    public function getFormatResult()
+    {
+        return $this->formatResult ? $this->formatResult : $this->getFormatDefault();
+    }
+    
+    /**
+     * Answers the selection format defined for the receiver.
+     *
+     * @return string
+     */
+    public function getFormatSelection()
+    {
+        return $this->formatSelection ? $this->formatSelection : $this->getFormatDefault();
+    }
+    
+    /**
+     * Answers the default format for the receiver.
+     *
+     * @return string
+     */
+    protected function getFormatDefault()
+    {
+        return sprintf('<span><%1$s class="%2$s"></%1$s> $Title</span>', $this->FormatTag, $this->FormatClass);
+    }
+    
+    /**
+     * Answers the tag for the default format.
+     *
+     * @return string
+     */
+    protected function getFormatTag()
+    {
+        return $this->backend->getFieldTagName();
+    }
+    
+    /**
+     * Answers the class for the default format.
+     *
+     * @return string
+     */
+    protected function getFormatClass()
+    {
+        return str_replace('{value}', '$ID', $this->backend->getFieldClasses());
+    }
+    
+    /**
+     * Answers an array data object for the given icon ID.
+     *
+     * @param string $id
+     *
+     * @return ArrayData
+     */
+    protected function getIconData($id)
+    {
+        return ArrayData::create(['ID' => $id, 'Title' => $id]);
     }
 }
