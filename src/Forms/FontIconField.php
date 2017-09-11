@@ -132,18 +132,6 @@ class FontIconField extends Select2AjaxField
     }
     
     /**
-     * Answers the record identified by the recorded field value.
-     *
-     * @return ArrayData
-     */
-    public function getValueRecord()
-    {
-        if ($id = $this->Value()) {
-            return $this->getIconData($id);
-        }
-    }
-    
-    /**
      * Answers the result format defined for the receiver.
      *
      * @return string
@@ -191,6 +179,18 @@ class FontIconField extends Select2AjaxField
     protected function getFormatClass()
     {
         return str_replace('{value}', '$ID', $this->backend->getFieldClasses());
+    }
+    
+    /**
+     * Answers the record identified by the given value.
+     *
+     * @param mixed $id
+     *
+     * @return ViewableData
+     */
+    protected function getValueRecord($id)
+    {
+        return $this->getIconData($id);
     }
     
     /**
