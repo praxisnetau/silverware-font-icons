@@ -1,6 +1,6 @@
 {
   "name": "silverware/font-icons",
-  "type": "silverstripe-module",
+  "type": "silverstripe-vendormodule",
   "description": "SilverWare Font Icons Module.",
   "homepage": "https://github.com/praxisnetau/silverware-font-icons",
   "keywords": [
@@ -34,7 +34,9 @@
     "branch-alias": {
       "dev-master": "1.0.x-dev"
     },
-    "installer-name": "silverware-font-icons"
+    "expose": [
+      "admin/client/dist"
+    ]
   },
   "minimum-stability": "dev",
   "prefer-stable": true
