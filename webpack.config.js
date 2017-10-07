@@ -18,7 +18,7 @@ const PATHS = {
     SRC: path.resolve(__dirname, 'admin/client/src'),
     DIST: path.resolve(__dirname, 'admin/client/dist'),
     BUNDLES: path.resolve(__dirname, 'admin/client/src/bundles'),
-    PUBLIC: '/silverware-font-icons/admin/client/dist/'
+    PUBLIC: '/resources/silverware/font-icons/admin/client/dist/'
   },
   MODULES: path.resolve(__dirname, 'node_modules')
 };
@@ -202,7 +202,7 @@ const config = (env) => {
       resolve: {
         alias: {
           'font-awesome$': path.resolve(PATHS.MODULES, 'font-awesome/scss/font-awesome.scss'),
-          'silverstripe-admin': path.resolve(process.env.PWD, '../silverstripe-admin/client/src')
+          'silverstripe-admin': path.resolve(process.env.PWD, '../../silverstripe/admin/client/src')
         },
         modules: [
           PATHS.ADMIN.SRC,
