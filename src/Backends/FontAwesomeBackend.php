@@ -200,6 +200,40 @@ class FontAwesomeBackend implements FontIconBackend, Flushable
     }
     
     /**
+     * Answers an associative array of icon IDs mapped to icon names.
+     *
+     * @return array
+     */
+    public function getIcons()
+    {
+        // Initialise:
+        
+        $icons = [];
+        
+        // Iterate Grouped Icons:
+        
+        foreach ($this->getGroupedIcons() as $name => $group) {
+            
+            foreach ($group as $id => $icon) {
+                
+                if (!isset($icons[$id])) {
+                    $icons[$id] = isset($icon['name']) ? $icon['name'] : $id;
+                }
+                
+            }
+            
+        }
+        
+        // Sort Icons by Key:
+        
+        ksort($icons);
+        
+        // Answer Icons:
+        
+        return $icons;
+    }
+    
+    /**
      * Answers an array of icons grouped into their respective categories.
      *
      * @return array
