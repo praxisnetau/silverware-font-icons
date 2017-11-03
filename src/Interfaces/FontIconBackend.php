@@ -48,6 +48,13 @@ interface FontIconBackend
     public function getClassName($identifier, $args = []);
     
     /**
+     * Answers an associative array of icon IDs mapped to icon names.
+     *
+     * @return array
+     */
+    public function getIcons();
+    
+    /**
      * Answers an array of icons grouped into their respective categories.
      *
      * @return array

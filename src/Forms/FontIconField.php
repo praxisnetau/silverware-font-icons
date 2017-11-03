@@ -63,6 +63,24 @@ class FontIconField extends Select2AjaxField
     }
     
     /**
+     * Answers the source items for the field.
+     *
+     * @return array|ArrayAccess
+     */
+    public function getSource()
+    {
+        // Answer Custom Source:
+        
+        if ($source = $this->source) {
+            return $source;
+        }
+        
+        // Answer Default Source:
+        
+        return $this->backend->getIcons();
+    }
+    
+    /**
      * Answers an HTTP response containing JSON results matching the given search parameters.
      *
      * @param HTTPRequest $request
